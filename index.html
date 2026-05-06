@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual del Propietario — Inmobiliaria Salfa Austral</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── PASSWORD SCREEN ── */
+#lock-screen {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--brand);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  font-family: 'DM Sans', sans-serif;
+}
+#lock-screen.hidden { display: none; }
+
+.lock-card {
+  background: #FAF7F0;
+  border-radius: 20px;
+  padding: 40px 36px;
+  max-width: 400px; width: 100%;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.lock-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #C8A84B, #F0D882, #C8A84B);
+}
+.lock-logo {
+  width: 64px; height: 64px; border-radius: 16px;
+  background: #1A3A2A;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; margin: 0 auto 20px;
+}
+.lock-card h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 22px; font-weight: 400;
+  color: #1A3A2A; margin-bottom: 6px;
+}
+.lock-card p {
+  font-size: 13px; color: #888; margin-bottom: 28px; line-height: 1.6;
+}
+.lock-input-wrap { position: relative; margin-bottom: 14px; }
+.lock-input {
+  width: 100%;
+  padding: 14px 48px 14px 18px;
+  border: 1.5px solid #E0D8C8;
+  border-radius: 10px;
+  font-size: 16px; font-family: 'DM Sans', sans-serif;
+  background: white; color: #1C1C1C;
+  outline: none; letter-spacing: .1em;
+  transition: border-color .2s;
+}
+.lock-input:focus { border-color: #1A3A2A; }
+.lock-input.error { border-color: #C0392B; animation: shake .35s ease; }
+.lock-toggle {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer;
+  color: #888; font-size: 18px; padding: 4px;
+  display: flex; align-items: center;
+}
+.lock-btn {
+  width: 100%;
+  padding: 14px;
+  background: #1A3A2A;
+  color: white; border: none;
+  border-radius: 10px;
+  font-size: 15px; font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer; transition: background .2s, transform .1s;
+  letter-spacing: .03em;
+}
+.lock-btn:hover { background: #2D5A40; }
+.lock-btn:active { transform: scale(.98); }
+.lock-error {
+  font-size: 12px; color: #C0392B; margin-top: 10px;
+  min-height: 18px; font-weight: 500;
+}
+.lock-hint {
+  font-size: 11px; color: #bbb; margin-top: 20px;
+  padding-top: 16px; border-top: 1px solid #EDE7DA;
+}
+.lock-hint strong { color: #888; }
+
+@keyframes shake {
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-8px)}
+  40%{transform:translateX(8px)}
+  60%{transform:translateX(-5px)}
+  80%{transform:translateX(5px)}
+}
+
+:root {
+  --brand: #1A3A2A;
+  --brand-mid: #2D5A40;
+  --brand-light: #4A8C5C;
+  --accent: #C8A84B;
+  --accent-light: #F0D882;
+  --cream: #FAF7F0;
+  --cream-dark: #F0EBE0;
+  --text: #1C1C1C;
+  --text-mid: #4A4A4A;
+  --text-muted: #888;
+  --danger: #C0392B;
+  --danger-bg: #FEF0EE;
+  --warn: #D4680A;
+  --warn-bg: #FFF4E6;
+  --info: #1A5276;
+  --info-bg: #EBF5FB;
+  --success: #1A7A3A;
+  --success-bg: #EAFAF1;
+  --radius: 16px;
+  --radius-sm: 8px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.08);
+  --shadow-hover: 0 8px 40px rgba(0,0,0,0.14);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--brand);
+  color: white;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.hero-pattern {
+  position: absolute; inset: 0;
+  background-image: 
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 40px),
+    repeating-linear-gradient(-45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 40px);
+}
+.hero-accent {
+  position: absolute; top: 0; right: 0;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(200,168,75,0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-content {
+  position: relative;
+  padding: 48px 40px 40px;
+  max-width: 900px;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(200,168,75,0.2);
+  border: 1px solid rgba(200,168,75,0.4);
+  color: var(--accent-light);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 40px;
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 400;
+  line-height: 1.15;
+  margin-bottom: 12px;
+  color: white;
+}
+.hero h1 em {
+  font-style: italic;
+  color: var(--accent-light);
+}
+.hero-sub {
+  font-size: 15px;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 32px;
+  max-width: 520px;
+}
+.hero-pills {
+  display: flex; flex-wrap: wrap; gap: 10px;
+}
+.pill {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.85);
+  font-size: 12px; font-weight: 500;
+  padding: 6px 14px; border-radius: 40px;
+  cursor: pointer; transition: all .2s;
+  text-decoration: none;
+}
+.pill:hover { background: rgba(255,255,255,0.2); color: white; }
+
+/* ── NAV TABS ── */
+.nav-tabs {
+  background: white;
+  border-bottom: 1px solid #E8E0D0;
+  padding: 0 40px;
+  display: flex; gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.nav-tabs::-webkit-scrollbar { display: none; }
+.nav-tab {
+  display: flex; align-items: center; gap: 8px;
+  padding: 16px 20px;
+  font-size: 13px; font-weight: 500;
+  color: var(--text-mid);
+  cursor: pointer; white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: all .2s;
+  text-decoration: none;
+}
+.nav-tab:hover { color: var(--brand); }
+.nav-tab.active { color: var(--brand); border-bottom-color: var(--brand); }
+.nav-tab .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: currentColor; opacity: .4;
+  flex-shrink: 0;
+}
+.nav-tab.urgent .dot { background: var(--danger); opacity: 1; }
+.nav-tab.urgent.active { color: var(--danger); border-bottom-color: var(--danger); }
+
+/* ── LAYOUT ── */
+.container { max-width: 900px; margin: 0 auto; padding: 48px 24px; }
+
+/* ── SECTION ── */
+.section { display: none; }
+.section.active { display: block; }
+
+/* ── SECTION HEADER ── */
+.section-header {
+  display: flex; align-items: flex-start; gap: 20px;
+  margin-bottom: 36px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--cream-dark);
+}
+.section-icon {
+  width: 64px; height: 64px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; flex-shrink: 0;
+}
+.section-title h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 28px; font-weight: 400;
+  line-height: 1.2; margin-bottom: 6px;
+}
+.section-title p { font-size: 14px; color: var(--text-muted); }
+
+/* ── CARDS GRID ── */
+.cards { display: grid; gap: 16px; }
+.cards-2 { grid-template-columns: 1fr 1fr; }
+.cards-3 { grid-template-columns: repeat(3, 1fr); }
+@media(max-width:640px){ .cards-2, .cards-3 { grid-template-columns: 1fr; } }
+
+/* ── CARD ── */
+.card {
+  background: white;
+  border: 1px solid #EDE7DA;
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  transition: box-shadow .2s, transform .2s;
+}
+.card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+.card-icon { font-size: 24px; margin-bottom: 12px; }
+.card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+.card p { font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+
+/* ── ALERT CARDS ── */
+.alert {
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  border-left: 4px solid;
+  display: flex; gap: 14px; align-items: flex-start;
+}
+.alert.danger { background: var(--danger-bg); border-color: var(--danger); }
+.alert.warn { background: var(--warn-bg); border-color: var(--warn); }
+.alert.info { background: var(--info-bg); border-color: var(--info); }
+.alert.success { background: var(--success-bg); border-color: var(--success); }
+.alert-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+.alert-body { flex: 1; }
+.alert-body strong { font-size: 14px; font-weight: 600; display: block; margin-bottom: 4px; }
+.alert-body p, .alert-body ul { font-size: 13px; line-height: 1.65; }
+.alert-body ul { padding-left: 16px; }
+.alert-body ul li { margin-bottom: 4px; }
+
+/* ── STEPS ── */
+.steps { display: flex; flex-direction: column; gap: 0; }
+.step {
+  display: flex; gap: 16px; align-items: flex-start;
+  position: relative;
+}
+.step:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 19px; top: 44px;
+  width: 2px; height: calc(100% - 8px);
+  background: var(--cream-dark);
+}
+.step-num {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--brand);
+  color: white;
+  font-size: 14px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; position: relative; z-index: 1;
+}
+.step-num.danger { background: var(--danger); }
+.step-body {
+  padding: 8px 0 28px;
+  flex: 1;
+}
+.step-body strong { font-size: 15px; font-weight: 600; display: block; margin-bottom: 6px; }
+.step-body p { font-size: 13px; color: var(--text-mid); line-height: 1.6; }
+
+/* ── MAINTENANCE TABLE ── */
+.maint-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 13px; background: white;
+  border-radius: var(--radius); overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.maint-table th {
+  background: var(--brand);
+  color: white; font-weight: 600;
+  padding: 12px 16px; text-align: left;
+  font-size: 12px; letter-spacing: .04em; text-transform: uppercase;
+}
+.maint-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #F0EBE0;
+  vertical-align: top;
+}
+.maint-table tr:last-child td { border-bottom: none; }
+.maint-table tr:hover td { background: var(--cream); }
+.freq-badge {
+  display: inline-block;
+  padding: 3px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 600;
+}
+.freq-1 { background: #E8F5E9; color: #2E7D32; }
+.freq-2 { background: #E3F2FD; color: #1565C0; }
+.freq-3 { background: #FFF8E1; color: #F57F17; }
+.freq-x { background: #FCE4EC; color: #C62828; }
+
+/* ── CONTACT CARD ── */
+.contact-card {
+  background: var(--brand);
+  color: white;
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  display: flex; align-items: center; gap: 20px;
+  margin-bottom: 16px;
+}
+.contact-card .icon { font-size: 40px; }
+.contact-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+.contact-card p { font-size: 13px; opacity: .75; margin-bottom: 8px; }
+.contact-card a {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--brand);
+  font-weight: 700; font-size: 18px;
+  padding: 8px 20px; border-radius: 8px;
+  text-decoration: none; letter-spacing: .04em;
+}
+
+/* ── QR BOX ── */
+.qr-box {
+  background: white;
+  border: 2px dashed var(--accent);
+  border-radius: var(--radius);
+  padding: 32px;
+  text-align: center;
+  margin-top: 32px;
+}
+.qr-placeholder {
+  width: 120px; height: 120px;
+  background: var(--cream-dark);
+  border-radius: 12px;
+  margin: 0 auto 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 48px;
+}
+.qr-box h4 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+.qr-box p { font-size: 13px; color: var(--text-muted); max-width: 280px; margin: 0 auto; }
+
+/* ── SECTION OVERVIEW (HOME) ── */
+.home-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+@media(max-width:640px){ .home-grid { grid-template-columns: 1fr 1fr; } }
+
+.home-card {
+  background: white;
+  border: 1px solid #EDE7DA;
+  border-radius: var(--radius);
+  padding: 20px;
+  cursor: pointer;
+  transition: all .2s;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none; color: inherit;
+}
+.home-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--brand);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .25s;
+}
+.home-card:hover::before { transform: scaleX(1); }
+.home-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-3px); }
+.home-card.urgent::before { background: var(--danger); transform: scaleX(1); }
+.home-card-emoji { font-size: 28px; margin-bottom: 10px; }
+.home-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.home-card p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+.urgent-tag {
+  display: inline-block;
+  background: var(--danger-bg); color: var(--danger);
+  font-size: 10px; font-weight: 700;
+  padding: 2px 8px; border-radius: 20px;
+  margin-top: 8px; letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+/* ── GUARANTEE BOX ── */
+.guarantee-box {
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-mid) 100%);
+  color: white;
+  border-radius: var(--radius);
+  padding: 32px 36px;
+  margin-bottom: 24px;
+  position: relative; overflow: hidden;
+}
+.guarantee-box::after {
+  content: '★';
+  position: absolute; right: 32px; top: 50%; transform: translateY(-50%);
+  font-size: 80px; opacity: .07;
+}
+.guarantee-box h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px; font-weight: 400; margin-bottom: 16px;
+  color: var(--accent-light);
+}
+.guarantee-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+@media(max-width:600px){ .guarantee-grid { grid-template-columns: 1fr; } }
+.guarantee-item { }
+.guarantee-item .years {
+  font-size: 32px; font-weight: 700; color: var(--accent-light); line-height: 1;
+  margin-bottom: 4px;
+}
+.guarantee-item .label { font-size: 11px; opacity: .75; text-transform: uppercase; letter-spacing: .08em; }
+.guarantee-item .detail { font-size: 13px; margin-top: 6px; opacity: .9; }
+
+/* ── TOOLS GRID ── */
+.tools-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+@media(max-width:600px){ .tools-grid { grid-template-columns: repeat(3,1fr); } }
+.tool-item {
+  background: white; border: 1px solid #EDE7DA;
+  border-radius: 12px; padding: 16px 12px;
+  text-align: center; font-size: 12px; color: var(--text-mid);
+}
+.tool-item .emoji { font-size: 24px; display: block; margin-bottom: 6px; }
+
+/* ── MONTH BADGE ── */
+.month { 
+  display: inline-block;
+  background: var(--cream-dark); color: var(--brand);
+  font-size: 11px; font-weight: 700;
+  padding: 2px 8px; border-radius: 4px;
+  font-variant: small-caps; letter-spacing: .05em;
+}
+
+/* ── DIVIDER ── */
+.divider { height: 1px; background: var(--cream-dark); margin: 32px 0; }
+
+/* ── LABEL ── */
+.label-sm {
+  font-size: 11px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--text-muted);
+  margin-bottom: 12px; display: block;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--brand);
+  color: rgba(255,255,255,.6);
+  text-align: center;
+  padding: 32px 24px;
+  font-size: 13px;
+}
+footer strong { color: white; }
+</style>
+</head>
+<body>
+
+<!-- ════ PANTALLA DE ACCESO ════ -->
+<div id="lock-screen">
+  <div class="lock-card">
+    <div class="lock-logo">🏡</div>
+    <h2>Manual del Propietario</h2>
+    <p>Ingrese la clave entregada por Inmobiliaria Salfa Austral para acceder al manual de su vivienda.</p>
+    <div class="lock-input-wrap">
+      <input
+        id="pwd-input"
+        class="lock-input"
+        type="password"
+        placeholder="Ingrese su clave"
+        autocomplete="off"
+        onkeydown="if(event.key==='Enter') checkPwd()"
+      />
+      <button class="lock-toggle" onclick="toggleShow()" title="Mostrar contraseña" id="eye-btn">👁</button>
+    </div>
+    <button class="lock-btn" onclick="checkPwd()">Ingresar al manual →</button>
+    <div class="lock-error" id="lock-error"></div>
+    <div class="lock-hint">
+      ¿No tiene su clave? Contacte a<br>
+      <strong>Inmobiliaria Salfa Austral</strong>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-pattern"></div>
+  <div class="hero-accent"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      🏡 Inmobiliaria Salfa Austral
+    </div>
+    <h1>Manual del<br><em>Propietario</em></h1>
+    <p class="hero-sub">Mirador del Bosque II — Toda la información para cuidar su hogar, siempre disponible y actualizada.</p>
+    <div class="hero-pills">
+      <a class="pill" onclick="showSection('inicio')">🏠 Inicio</a>
+      <a class="pill" onclick="showSection('calefaccion')">🔥 Calefacción</a>
+      <a class="pill" onclick="showSection('gas')">⚠️ Gas</a>
+      <a class="pill" onclick="showSection('electrico')">⚡ Eléctrico</a>
+      <a class="pill" onclick="showSection('sanitario')">🚿 Sanitario</a>
+    </div>
+  </div>
+</header>
+
+<!-- NAV TABS -->
+<nav class="nav-tabs" id="mainNav">
+  <a class="nav-tab active" onclick="showSection('inicio')" data-section="inicio"><span class="dot"></span> Inicio</a>
+  <a class="nav-tab urgent" onclick="showSection('emergencias')" data-section="emergencias"><span class="dot"></span> Emergencias</a>
+  <a class="nav-tab" onclick="showSection('calefaccion')" data-section="calefaccion"><span class="dot"></span> Calefacción</a>
+  <a class="nav-tab" onclick="showSection('gas')" data-section="gas"><span class="dot"></span> Gas</a>
+  <a class="nav-tab" onclick="showSection('electrico')" data-section="electrico"><span class="dot"></span> Eléctrico</a>
+  <a class="nav-tab" onclick="showSection('sanitario')" data-section="sanitario"><span class="dot"></span> Sanitario</a>
+  <a class="nav-tab" onclick="showSection('humedad')" data-section="humedad"><span class="dot"></span> Humedad</a>
+  <a class="nav-tab" onclick="showSection('pinturas')" data-section="pinturas"><span class="dot"></span> Pinturas</a>
+  <a class="nav-tab" onclick="showSection('puertas')" data-section="puertas"><span class="dot"></span> Puertas</a>
+  <a class="nav-tab" onclick="showSection('pisos')" data-section="pisos"><span class="dot"></span> Pisos</a>
+  <a class="nav-tab" onclick="showSection('muebles')" data-section="muebles"><span class="dot"></span> Muebles</a>
+  <a class="nav-tab" onclick="showSection('exterior')" data-section="exterior"><span class="dot"></span> Exterior</a>
+  <a class="nav-tab" onclick="showSection('mantencion')" data-section="mantencion"><span class="dot"></span> Mantención</a>
+  <a class="nav-tab" onclick="showSection('contactos')" data-section="contactos"><span class="dot"></span> Contactos</a>
+</nav>
+
+<!-- ════════════════ INICIO ════════════════ -->
+<div class="section active" id="section-inicio">
+<div class="container">
+
+  <div class="guarantee-box">
+    <h3>Programa de Garantía — Ley 20.016</h3>
+    <div class="guarantee-grid">
+      <div class="guarantee-item">
+        <div class="years">3</div>
+        <div class="label">años</div>
+        <div class="detail">Fallas en terminaciones y acabados (desde inscripción en CBR)</div>
+      </div>
+      <div class="guarantee-item">
+        <div class="years">5</div>
+        <div class="label">años</div>
+        <div class="detail">Fallas en elementos constructivos e instalaciones (desde recepción municipal)</div>
+      </div>
+      <div class="guarantee-item">
+        <div class="years">10</div>
+        <div class="label">años</div>
+        <div class="detail">Fallas en estructura soportante del inmueble (desde recepción municipal)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert warn">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-body">
+      <strong>Importante: las garantías pueden caducar</strong>
+      <p>Toda modificación a instalaciones eléctricas, de gas, sanitarias o estructurales realizada por personal no autorizado hace caducar las garantías correspondientes.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <span class="label-sm">Secciones del manual</span>
+
+  <div class="home-grid">
+    <a class="home-card urgent" onclick="showSection('emergencias')">
+      <div class="home-card-emoji">🆘</div>
+      <h3>Emergencias</h3>
+      <p>Gas, incendio, corte eléctrico, inundación</p>
+      <div class="urgent-tag">Leer primero</div>
+    </a>
+    <a class="home-card" onclick="showSection('calefaccion')">
+      <div class="home-card-emoji">🔥</div>
+      <h3>Calefacción</h3>
+      <p>Caldera, termostato, radiadores, purga</p>
+    </a>
+    <a class="home-card" onclick="showSection('gas')">
+      <div class="home-card-emoji">🔵</div>
+      <h3>Gas</h3>
+      <p>Calefón, cocina, llaves de paso, fuga</p>
+    </a>
+    <a class="home-card" onclick="showSection('electrico')">
+      <div class="home-card-emoji">⚡</div>
+      <h3>Circuitos Eléctricos</h3>
+      <p>Tablero, interruptores, corte de suministro</p>
+    </a>
+    <a class="home-card" onclick="showSection('sanitario')">
+      <div class="home-card-emoji">🚿</div>
+      <h3>Instalaciones Sanitarias</h3>
+      <p>Agua potable, alcantarillado, grifería</p>
+    </a>
+    <a class="home-card" onclick="showSection('humedad')">
+      <div class="home-card-emoji">💧</div>
+      <h3>Humedad</h3>
+      <p>Prevención, ventilación, condensación</p>
+    </a>
+    <a class="home-card" onclick="showSection('pinturas')">
+      <div class="home-card-emoji">🎨</div>
+      <h3>Pinturas y Murales</h3>
+      <p>Interior, exterior, papel mural, barniz</p>
+    </a>
+    <a class="home-card" onclick="showSection('puertas')">
+      <div class="home-card-emoji">🚪</div>
+      <h3>Puertas y Ventanas</h3>
+      <p>Sellos, bisagras, quincallería, PVC</p>
+    </a>
+    <a class="home-card" onclick="showSection('pisos')">
+      <div class="home-card-emoji">🪵</div>
+      <h3>Revestimientos de Piso</h3>
+      <p>Piso flotante, cerámicos, porcelanato</p>
+    </a>
+    <a class="home-card" onclick="showSection('muebles')">
+      <div class="home-card-emoji">🪑</div>
+      <h3>Muebles y Closets</h3>
+      <p>Cocina, closets, vanitorios, melamina</p>
+    </a>
+    <a class="home-card" onclick="showSection('exterior')">
+      <div class="home-card-emoji">🌿</div>
+      <h3>Exterior</h3>
+      <p>Jardín, canaletas, rejas, cámaras</p>
+    </a>
+    <a class="home-card" onclick="showSection('mantencion')">
+      <div class="home-card-emoji">📅</div>
+      <h3>Calendario de Mantención</h3>
+      <p>Qué hacer y cuándo, todo el año</p>
+    </a>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════ EMERGENCIAS ════════════════ -->
+<div class="section" id="section-emergencias">
+<div class="container">
+  <div class="section-header">
+    <div class="section-icon" style="background:#FEF0EE; font-size:32px">🆘</div>
+    <div class="section-title">
+      <h2>Emergencias</h2>
+      <p>Protocolos de actuación ante situaciones críticas. Léalos antes de necesitarlos.</p>
+    </div>
+  </div>
+
+  <div class="alert danger">
+    <div class="alert-icon">🔴</div>
+    <div class="alert-body">
+      <strong>Ante cualquier emergencia grave: llame primero al 133 (Carabineros) o 132 (Bomberos)</strong>
+      <p>No intente resolver situaciones de peligro usted solo. Su seguridad es lo primero.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <span class="label-sm">🔵 Fuga de gas</span>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num danger">1</div>
+      <div class="step-body"><strong>Ventile inmediatamente</strong><p>Abra puertas y ventanas de par en par. No encienda ninguna luz ni aparato eléctrico.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num danger">2</div>
+      <div class="step-body"><strong>Corte el suministro eléctrico general</strong><p>Baje el interruptor principal del tablero. No use encendedores ni cerillas.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num danger">3</div>
+      <div class="step-body"><strong>Cierre todas las llaves de gas</strong><p>Calefón, cocina, caldera y la llave principal junto al medidor de gas.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num danger">4</div>
+      <div class="step-body"><strong>Llame desde AFUERA de la vivienda</strong><p>Use el teléfono de un vecino. Llame al servicio de emergencia de la compañía de gas y a Bomberos (132).</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num danger">5</div>
+      <div class="step-body"><strong>No vuelva a entrar</strong><p>Espere al técnico autorizado fuera de la vivienda. No intente ubicar la fuga usted mismo.</p></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <span class="label-sm">⚡ Corte de suministro eléctrico</span>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><strong>Averigüe si es general o solo su vivienda</strong><p>¿Sus vecinos también están sin luz? Si es general, llame a la compañía eléctrica.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body"><strong>Revise el tablero eléctrico interior</strong><p>Localice el tablero (generalmente en pasillo o cocina). Revise si algún interruptor automático está caído.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body"><strong>Reposicione el interruptor</strong><p>Bájelo completamente y vuélvalo a subir. Si vuelve a saltar: desenchufe todos los artefactos y pruebe de nuevo.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body"><strong>Reconecte el protector diferencial</strong><p>Si el corte persiste, reconecte el diferencial con todos los equipos desenchufados.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body"><strong>Si nada funciona, llame a un electricista SEC</strong><p>No intente manipular el tablero externo ni el medidor. Eso le corresponde a la compañía.</p></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <span class="label-sm">🚿 Inundación o fuga de agua</span>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><strong>Cierre la llave de paso principal</strong><p>Está junto al medidor de agua de la vivienda, generalmente en la fachada exterior.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body"><strong>Identifique el origen</strong><p>Busque la cañería, flexible o artefacto que está fallando.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body"><strong>Llame al técnico</strong><p>Consulte a un gasfíter autorizado. Toda reparación en la instalación original debe ser profesional para no perder la garantía.</p></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="cards cards-2">
+    <div class="card">
+      <div class="card-icon">📞</div>
+      <h3>Números de emergencia Chile</h3>
+      <p><strong>132</strong> Bomberos<br><strong>133</strong> Carabineros<br><strong>131</strong> SAMU<br><strong>101</strong> PDI</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏢</div>
+      <h3>Post Venta Salfa Austral</h3>
+      <p>Fallas o defectos cubiertos por garantía. Contacte a Inmobiliaria Salfa Austral. No realice reparaciones propias sin consultar primero.</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════ CALEFACCIÓN ════════════════ -->
+<div class="section" id="section-calefaccion">
+<div class="container">
+  <div class="section-header">
+    <div class="section-icon" style="background:#FFF4E6">🔥</div>
+    <div class="section-title">
+      <h2>Calefacción</h2>
+      <p>Operación de la caldera, termostato y radiadores. Garantía: 1 año desde entrega.</p>
+    </div>
+  </div>
+
+  <div class="alert danger">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-body">
+      <strong>Solo personal técnico autorizado puede manipular la caldera</strong>
+      <p>Cualquier intervención no autorizada anula la garantía. Para mantención anual contacte a IMPA Ltda. (proveedor oficial).</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <span class="label-sm">Operación del termostato</span>
+  <div class="cards cards-2">
+    <div class="card">
+      <div class="card-icon">🌡️</div>
+      <h3>Cómo funciona</h3>
+      <p>La caldera se encenderá automáticamente cuando el termostato registre temperaturas inferiores a la fijada por usted. Los termostatos se calibran con ±5 grados de tolerancia.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">❌</div>
+      <h3>Lo que NO debe hacer</h3>
+      <p>Subir mucho el termostato no calienta más rápido. Modificar constantemente la temperatura daña el sistema y aumenta el consumo energético.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <span class="label-sm">Presión del sistema</span>
+  <div class="alert info">
+    <div class="alert-icon">💧</div>
+    <div class="alert-body">
+      <strong>Presión normal de trabajo: entre 1,5 y 2 bares</strong>
+      <p>El llenado del sistema se realiza en forma manual. Si la presión supera 3 bares, actuará la válvula de seguridad para liberar el exceso. <strong>No olvide cortar el llenado</strong> al alcanzar la presión correcta.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <span class="label-sm">Purga de radiadores</span>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><strong>Identifique el radiador que no calienta en su totalidad</strong><p>Tóquelo: si hay zonas frías arriba y calientes abajo, tiene aire acumulado.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body"><strong>Afloje la purga con llave de purgado</strong><p>Gire el tornillo de purga levemente. <strong>NO lo saque completo</strong>, solo libérelo para que salga el aire.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body"><strong>Espere a que salga agua y cierre</strong><p>Cuando empiece a salir agua (en lugar de aire), vuelva a cerrar el tornillo. El radiador debería calentarse de forma uniforme.</p></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <span class="label-sm">Ruidos del sistema</span>
+  <div class="alert success">
+    <div class="alert-icon">✅</div>
+    <div class="alert-body">
+      <strong>Los ruidos son normales</strong>
+      <p>Los chasquidos y sonidos en los ductos son resultado natural del calentamiento y enfriamiento de los materiales. No indican una falla.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <span class="label-sm">Abandono prolongado de la vivienda</span>
+  <div class="alert warn">
+    <div class="alert-icon">📅</div>
+    <div class="alert-body">
+      <strong>Si apaga la caldera por más de 35 días</strong>
+      <p>Es obligatorio llamar al servicio técnico antes de volver a ponerla en marcha. La caldera debe ser revisada.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <span class="label-sm">Mantención anual — Proveedor oficial</span>
+  <div class="contact-card">
+    <div class="icon">🔧</div>
+    <div>
+      <h3>IMPA Ltda. — Servicio Técnico Caldera</h3>
+      <p>Ingeniería Mecánica Proyectos y Asesorías Ltda. · RUT 86.676.200-7 · Punta Arenas</p>
+      <a href="tel:+56612213551">61-221 3551</a>
+    </div>
+  </div>
+  <div class="alert info">
+    <div class="alert-icon">ℹ️</div>
+    <div class="alert-body">
+      <strong>Garantía caldera: 1 año desde entrega de la vivienda</strong>
+      <p>La mantención anual es obligatoria y corre por cuenta del propietario. Para modelos Canelo y Notro, la garantía es de 3 años con mantención anual realizada por servicio técnico autorizado.</p>
+    </div>
+  </div>
+
+  <div class="qr-box">
+    <div class="qr-placeholder">📱</div>
+    <h4>QR Caldera — Reemplazar este cuadro con QR real</h4>
+    <p>Genere un QR apuntando a la URL de esta página con #calefaccion y péguelo sobre la caldera.</p>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════ GAS ════════════════ -->
+<div class="section" id="section-gas">
+<div class="container">
+  <div class="section-header">
+    <div class="section-icon" style="background:#FEF0EE">🔵</div>
+    <div class="section-title">
+      <h2>Instalación de Gas</h2>
+      <p>Calefón, cocina y estufas. El gas es muy peligroso. Lea con atención.</p>
+    </div>
+  </div>
+
+  <div class="alert danger">
+    <div class="alert-icon">🚨</div>
+    <div class="alert-body">
+      <strong>Ante sospecha de fuga de gas — actúe de inmediato</strong>
+      <ul>
+        <li>Ventile abriendo puertas y ventanas</li>
+        <li>No encienda aparatos eléctricos ni use encendedores</li>
+        <li>Corte el suministro eléctrico desde el tablero</li>
+        <li>Cierre todas las llaves de gas (calefón, cocina, medidor)</li>
+        <li>Llame desde un teléfono vecino a la compañía de gas y a Bomberos (132)</li>
+        <li>No intente ubicar la fuga usted mismo</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <span class="label-sm">Señales de alerta — cuando llamar al técnico</span>
+  <div class="cards cards-2">
+    <div class="card">
+      <div class="card-icon">👃</div>
+      <h3>Olor a gas</h3>
+      <p>Si percibe olor característico, aunque sea leve, aplique el protocolo de fuga inmediatamente.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💥</div>
+      <h3>Ruidos explosivos</h3>
+      <p>Al encender el calefón, cocina o estufas. Indica obstrucción en quemadores o problema en la instalación.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🕳️</div>
+      <h3>Hollín en rejillas</h3>
+      <p>Presencia de hollín en las rejillas del calefón indica combustión incompleta. Llame al técnico.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔧</div>
+      <h3>Quemadores tapados</h3>
+      <p>Cocina o estufas que no encienden correctamente. Requiere limpieza por técnico autorizado.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="alert warn">
+    <div class="alert-icon">☠️</div>
+    <div class="alert-body">
+      <strong>El monóxido de carbono no tiene olor — puede ser mortal</strong>
+      <p>El calefón encendido produce monóxido de carbono. <strong>Mantenga siempre las ventilaciones despejadas y sin obstrucciones.</strong> Nunca tape las rejillas de ventilación.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <span class="label-sm">Mantención preventiva</span>
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">📋</div>
+      <h3>Lo que debe saber</h3>
+      <p>• Sepa dónde están las llaves de paso de gas y el medidor.<br>• La instalación de artefactos a gas (cocina, horno) debe realizarla personal técnico autorizado.<br>• Revise frecuentemente los inyectores (quemadores) con técnico autorizado.<br>• Tenga siempre a mano el número de la compañía de gas.<br>• El propietario tiene la obligación de mantener vigente el <strong>Sello Verde</strong> (certificación SEC).</p>
+    </div>
+  </div>
+
+  <table class="maint-table" style="margin-top:24px">
+    <thead><tr><th>Mes</th><th>Acción</th><th>¿Qué?</th><th>Frecuencia</th></tr></thead>
+    <tbody>
+      <tr><td><span class="month">Mayo / Oct</span></td><td>Limpiar</td><td>Inyectores de cocina, calefón y estufas</td><td><span class="freq-3">Frecuente</span></td></tr>
+      <tr><td><span class="month">Todo año</span></td><td>Desengrasar</td><td>Campana de cocina</td><td><span class="freq-3">Siempre</span></td></tr>
+      <tr><td><span class="month">Todo año</span></td><td>Revisar</td><td>Mangueras y cañerías de gas</td><td><span class="freq-3">Siempre</span></td></tr>
+      <tr><td><span class="month">Según técnico</span></td><td>Reemplazar</td><td>Instalaciones de gas</td><td><span class="freq-x">Cuando lo indique el técnico</span></td></tr>
+    </tbody>
+  </table>
+
+</div>
+</div>
+
+<!-- ════════════════ ELÉCTRICO ════════════════ -->
+<div class="section" id="section-electrico">
+<div class="container">
+  <div class="section-header">
+    <div class="section-icon" style="background:#FFF9E6">⚡</div>
+    <div class="section-title">
+      <h2>Circuitos Eléctricos</h2>
+      <p>El sistema eléctrico está diseñado según normas SEC. No modifique sin electricista autorizado.</p>
+    </div>
+  </div>
+
+  <div class="alert warn">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-body">
+      <strong>Toda modificación eléctrica requiere electricista autorizado SEC</strong>
+      <p>Modificaciones no autorizadas caducan la garantía y representan riesgo de incendio. Use solo ampolletas GU10 de baja potencia (no halógenas) para este proyecto.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <span class="label-sm">¿Por qué saltan los interruptores automáticos?</span>
+  <div class="cards cards-3">
+    <div class="card">
+      <div class="card-icon">🔌</div>
+      <h3>Sobrecarga</h3>
+      <p>Demasiados artefactos conectados al mismo circuito. Desconecte algunos y vuelva a activar el interruptor.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💥</div>
+      <h3>Cortocircuito</h3>
+      <p>Conexión defectuosa o artefacto dañado. El interruptor protege a las personas desconectando el circuito.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔧</div>
+      <h3>Artefacto en mal estado</h3>
+      <p>Si salta siempre al conectar un artefacto específico, ese artefacto está fallando. Retírelo y llame a un técnico.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <span class="label-sm">Pasos ante corte eléctrico</span>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body"><strong>¿Tienen luz los vecinos?</strong><p>Si no tienen, es un corte general del barrio. Llame a la compañía eléctrica.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body"><strong>Revise el tablero interior</strong><p>Busque los interruptores automáticos y el protector diferencial. ¿Alguno está caído?</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body"><strong>Baje y suba el interruptor</strong><p>Bájelo completamente y vuélvalo a subir. Si vuelve a saltar, desenchufe todos los artefactos y repita.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body"><strong>Reconecte el diferencial</strong><p>Con todos los equipos desenchufados, reconecte el protector diferencial.</p></div>
+    </div>
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body"><strong>Si no se restablece</strong><p>Llame a un electricista autorizado por la SEC. No manipule el tablero externo ni el medidor.</p></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <span class="label-sm">Recomendaciones de uso</span>
+  <div class="cards cards-2">
+    <div class="card">
+      <div class="card-icon">✅</div>
+      <h3>Haga esto</h3>
+      <p>• Desconecte el circuito antes de cambiar ampolletas.<br>• Mantenga el tablero cerrado y con cubierta de protección.<br>• Tenga extintor accesible en la vivienda.<br>• Prefiera colores claros para reflejar la luz y reducir consumo.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">❌</div>
+      <h3>Evite esto</h3>
+      <p>• Triples y alargadores (riesgo de incendio).<br>• Conectar lavadora, secadora y secador de pelo simultáneamente.<br>• Instalar calefactores en baños mientras se ducha.<br>• Extensiones eléctricas subterráneas sin tubo PVC.</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════ SANITARIO ════════════════ -->
+<div class="section" id="section-sanitario">
+<div class="container">
+  <div class="section-header">
+    <div class="section-icon" style="background:#EBF5FB">🚿</div>
+    <div class="section-title">
+      <h2>Instalaciones Sanitarias</h2>
+      <p>Agua potable, alcantarillado, grifería y sellos. Recuerde la válvula de seguridad junto al medidor.</p>
+    </div>
+  </div>
+
+  <div class="alert warn">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-body">
+      <strong>Toda modificación hace caducar la garantía</strong>
+      <p>Alteraciones al sistema de alcantarillado o agua potable sin autorización caducan las garantías existentes.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <span class="label-sm">Lo que NUNCA debe tirar al WC o desagüe</span>
+  <div class="alert danger">
+    <div class="alert-icon">🚫</div>
+    <div class="alert-body">
+      <strong>Artículos prohibidos en el alcantarillado</strong>
+      <p>Algodón, toallas de papel, toallas húmedas, pañuelos desechables, restos de comida, aceites, grasas. La obstrucción causada por estos elementos <strong>no está cubierta por garantía</strong> y el costo de desatasco es del propietario.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <span class="label-sm">Señales de alerta</span>
+  <div class="cards cards-2">
+    <div class="card"><div class="card-icon">💧</div><h3>Goteras en la base de artefactos</h3><p>Indica rotura de gomas en el WC o sellos de silicona deteriorados. Requiere reparación inmediata.</p></div>
+    <div class="card"><div class="card-icon">🔩</div><h3>Grifería suelta</h3><p>Apretar o reemplazar. Si no sabe cómo, llame a un gasfíter.</p></div>
+    <div class="card"><div class="card-icon">💨</div><h3>Mal olor en desagüe</h3><p>Generalmente sifón sucio o seco. Limpie el sifón o vierta agua para reactivarlo.</p></div>
+    <div class="card"><div class="card-icon">📉</div><h3>Baja presión de agua</h3><p>Revise si el filtro o aireadero de la grifería está tapado. Puede limpiarlo usted mismo.</p></div>
+  </div>
+
+  <div class="divider"></div>
+  <span class="label-sm">Limpieza y cuidado</span>
+  <div class="cards">
+    <div class="card">
+      <h3>🧽 Productos adecuados</h3>
+      <p>Use limpiadores <strong>líquidos</strong> con esponja y agua tibia. Evite limpiadores en polvo abrasivos (rayan). No use soda cáustica para destapar cañerías. No use productos con cloro dentro del estanque del WC (deteriora las gomas). Limpie y seque la grifería después de usarla para evitar manchas de sarro.</p>
+    </div>
+  </div>
+
+  <table class="maint-table" style="margin-top:24px">
+    <thead><tr><th>Mes</th><th>Acción</th><th>¿Qué?</th><th>Frecuencia</th></tr></thead>
+    <tbody>
+      <tr><td><span class="month">Mar / Sep</span></td><td>Revisar</td><td>Flexibles (reemplazar si se oxidan, rompen o estrangulan)</td><td><span class="freq-2">2 veces al año</span></td></tr>
+      <tr><td><span class="month">Mar / Oct</span></td><td>Limpiar</td><td>Sifones de lavaplatos, tina, lavadero y lavamanos</td><td><span class="freq-2">2 veces al año</span></td></tr>
+      <tr><td><span class="month">Abr / Sep</span></td><td>Limpiar</td><td>Filtros o aireaderos de artefactos sanitarios y challa de ducha</td><td><span class="freq-2">2 veces al año</span></td></tr>
+      <tr><td><span class="month">Marzo</span></td><td>Revisar</td><td>Grifería (gomas, prensaestopa, llaves de paso)</td><td><span class="freq-1">1 vez al año</span></td></tr>
+      <tr><td><span class="month">Abr / Sep</span></td><td>Revisar</td><td>Sellos de artefactos sanitarios (tina, WC, lavamanos)</td><td><span class="freq-2">Cada 6 meses</span></td></tr>
+      <tr><td><span class="month">Cuando sea</span></td><td>Reemplazar</td><td>Arandelas de goma o cartuchos de grifería</td><td><span class="freq-x">Cuando no corte bien el agua</span></td></tr>
+    </tbody>
+  </table>
+
+</div>
+</div>
+
+<!-- ════════════════ HUMEDAD ════════════════ -->
+<div class="section" id="section-humedad">
+<div class="container">
+  <div class="section-header">
+    <div class="section-icon" style="background:#EBF5FB">💧</div>
+    <div class="section-title">
+      <h2>Humedad</h2>
+      <p>La humedad interior es generada por los habitantes. La ventilación diaria es la mejor prevención.</p>
+    </div>
+  </div>
+
+  <div class="alert info">
+    <div class="alert-icon">💡</div>
+    <div class="alert-body">
+      <strong>La humedad interior NO viene del exterior</strong>
+      <p>Es generada por las personas al cocinar, ducharse o secar ropa adentro. La solución es ventilar adecuadamente.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <span class="label-sm">¿Qué daña el exceso de humedad?</span>
+  <div class="cards cards-3">
+    <div class="card"><div class="card-icon">📄</div><h3>Papel mural</h3><p>Se humedece, desprende y aparecen hongos.</p></div>
+    <div class="card"><div class="card-icon">🪵</div><h3>Maderas</h3><p>Se deforman, aparecen hongos, se descoloran y descascaran si están barnizadas.</p></div>
+    <div class="card"><div class="card-icon">🎨</div><h3>Pinturas</h3><p>Se descascara en cielos y paredes por vapor acumulado.</p></div>
+    <div class="card"><div class="card-icon">🪟</div><h3>Ventanas</h3><p>Condensación en vidrios. Hongos en sellos de silicona.</p></div>
+    <div class="card"><div class="card-icon">🔩</div><h3>Metales</h3><p>Grifería y elementos metálicos envejecen y se oscurecen prematuramente.</p></div>
+    <div class="card"><div class="card-icon">🧱</div><h3>Muros</h3><p>Manchas blancas por sales. Hongos en uniones y esquinas.</p></div>
+  </div>
+
+  <div class="divider"></div>
+  <span class="label-sm">Cómo prevenir — hábitos diarios</span>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Ventile 15 minutos diarios</strong><p>Abra ventanas creando corriente de aire. Tenga cuidado con el viento (las ventanas pueden golpearse).</p></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Ventile el baño después de ducharse</strong><p>Especialmente con duchas calientes. Si no tiene ventana, encienda el extractor.</p></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Ventile la cocina al hervir agua</strong><p>Use la campana extractora. Mantenga sus filtros limpios.</p></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-body"><strong>No seque ropa al interior</strong><p>Es la fuente principal de humedad en invierno. Si debe hacerlo, ventile al mismo tiempo.</p></div></div>
+    <div class="step"><div class="step-num">5</div><div class="step-body"><strong>Seque vidrios empañados</strong><p>Si amanecen empañados, séquelos a primera hora. También seque las murallas si es necesario.</p></div></div>
+  </div>
+
+  <table class="maint-table" style="margin-top:24px">
+    <thead><tr><th>Mes</th><th>Acción</th><th>¿Qué?</th><th>Frecuencia</th></tr></thead>
+    <tbody>
+      <tr><td><span class="month">Mar</span></td><td>Limpiar</td><td>Drenajes y rieles de ventanas de PVC y canaletas</td><td><span class="freq-1">1 vez al año</span></td></tr>
+      <tr><td><span class="month">Mar/Jun/Sep</span></td><td>Limpiar</td><td>Extractores de cocina (campana) y baño</td><td><span class="freq-3">3 veces al año</span></td></tr>
+      <tr><td><span class="month">Mar/Sep</span></td><td>Limpiar</td><td>Celosías de ventilación</td><td><span class="freq-2">2 veces al año</span></td></tr>
+      <tr><td><span class="month">Abril</span></td><td>Mantención</td><td>Sistema de calefacciones</td><td><span class="freq-1">1 vez al año</span></td></tr>
+      <tr><td><span class="month">Mar/Sep</span></td><td>Reemplazar</td><td>Filtros de extractores de cocina</td><td><span class="freq-2">Cada 6 meses</span></td></tr>
+    </tbody>
+  </table>
+
+</div>
+</div>
+
+<!-- ════════════════ PINTURAS ════════════════ -->
+<div class="section" id="section-pinturas">
+<div class="container">
+  <div class="section-header">
+    <div class="section-icon" style="background:#EAFAF1">🎨</div>
+    <div class="section-title">
+      <h2>Pinturas y Papeles Murales</h2>
+      <p>Toda pintura tiene vida útil. La exposición a luz, humedad y tiempo la degrada naturalmente.</p>
+    </div>
+  </div>
+
+  <div class="alert info">
+    <div class="alert-icon">ℹ️</div>
+    <div class="alert-body">
+      <strong>Las fisuras son comportamiento normal de los materiales</strong>
+      <p>No son un defecto constructivo y no están cubiertas por la asistencia postventa. Se recomienda pintar la pared completa y no parchar, ya que los fabricantes no repiten exactamente los colores.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="cards cards-2">
+    <div class="card"><div class="card-icon">🏠</div><h3>Muros interiores (látex)</h3><p>Al limpiar una mancha, esta se extiende. Se recomienda repintar la pared completa, no lavar. Use pintura al óleo o esmalte al agua con repelente en baños y cocinas.</p></div>
+    <div class="card"><div class="card-icon">🌧️</div><h3>Muros exteriores</h3><p>Use productos con hidrorrepelente. Proteja muros sur (no les llega el sol y condensan más). No limpie con hidrolavadora: empuja agua hacia dentro.</p></div>
+    <div class="card"><div class="card-icon">🪵</div><h3>Maderas (barniz)</h3><p>Si el barniz tiene la misma base: rebarnizar directamente. Si es diferente: raspar, lijar, aplicar impregnante, luego 3-4 manos de barniz con filtro UV.</p></div>
+    <div class="card"><div class="card-icon">📄</div><h3>Papel mural vinílico</h3><p>Limpie manchas con esponja húmeda y seque sin frotar. Si la humedad afectó papel no vinílico, séquelo y pegue con pegamento específico para evitar hongos.</p></div>
+  </div>
+
+  <table class="maint-table" style="margin-top:24px">
+    <thead><tr><th>Mes</th><th>Acción</th><th>¿Qué?</th><th>Frecuencia</th></tr></thead>
+    <tbody>
+      <tr><td><span class="month">Mar/Oct</span></td><td>Revisar</td><td>Muros exteriores (grietas, descascaramiento, manchas)</td><td><span class="freq-2">2 veces al año</span></td></tr>
+      <tr><td><span class="month">Octubre</span></td><td>Pintar</td><td>Muros y rejas exteriores</td><td><span class="freq-1">1 vez al año</span></td></tr>
+      <tr><td><span class="month">Octubre</span></td><td>Pintar</td><td>Puertas, ventanas y marcos exteriores</td><td><span class="freq-1">1 vez al año</span></td></tr>
+      <tr><td></td><td>Pintar</td><td>Muros y cielos interiores</td><td><span class="freq-1">Cada 2 años</span></td></tr>
+      <tr><td></td><td>Pintar</td><td>Baños y cocina (recintos húmedos)</td><td><span class="freq-1">Cada 2 años</span></td></tr>
+      <tr><td><span class="month">Oct / necesario</span></td><td>Barnizar/pintar</td><td>Puertas, ventanas, aleros y marcos de madera</td><td><span class="freq-3">Cuando sea necesario</span></td></tr>
+    </tbody>
+  </table>
+
+</div>
+</div>
+
+<!-- ════════════════ PUERTAS ════════════════ -->
+<div class="section" id="section-puertas">
+<div class="container">
+  <div class="section-header">
+    <div class="section-icon" style="background:#FFF4E6">🚪</div>
+    <div class="section-title">
+      <h2>Puertas, Ventanas y Quincallería</h2>
+      <p>Son elementos de alto uso y se deterioran con facilidad. Lubrique y revise sellos frecuentemente.</p>
+    </div>
+  </div>
+
+  <div class="cards cards-2">
+    <div class="card"><div class="card-icon">🪟</div><h3>Ventanas y puertas PVC</h3><p>Limpie con agua tibia pura. Lubrique carriles y bisagras. Limpie los orificios de drenaje que permiten que la humedad salga. Use lubricante libre de petróleo (silicona en spray).</p></div>
+    <div class="card"><div class="card-icon">🪵</div><h3>Puertas y ventanas de madera</h3><p>La madera se expande en frío-húmedo y se contrae en calor-seco. Mantenga barnizados los cantos superiores e inferiores. Evite que el riego las moje.</p></div>
+  </div>
+
+  <div class="divider"></div>
+  <span class="label-sm">Si la puerta o ventana no cierra bien</span>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-body"><strong>Revise las bisagras</strong><p>Apriete los tornillos de fijación. Una bisagra suelta "descuelga" la puerta.</p></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-body"><strong>Detecte la zona que no ajusta</strong><p>Cierre despacio y observe dónde roza o no cierra.</p></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-body"><strong>Si persiste</strong><p>Solo en caso muy necesario: lijar la zona y repintar o rebarnizar. Si la puerta está torcida, contacte al servicio de postventa.</p></div></div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="alert info">
+    <div class="alert-icon">💡</div>
+    <div class="alert-body">
+      <strong>No clausure ventanas</strong>
+      <p>Son fundamentales para la ventilación de la vivienda y prevención de humedad. No cuelgue ropa ni objetos en puertas (no son de madera macisa). No permita que los niños se cuelguen de las cerraduras.</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════ PISOS ════════════════ -->
+<div class="section" id="section-pisos">
+<div class="container">
+  <div class="section-header">
+    <div class="section-icon" style="background:#F0EBE0">🪵</div>
+    <div class="section-title">
+      <h2>Revestimientos de Piso</h2>
+      <p>Piso flotante, cerámicos y porcelanato. Cada material requiere cuidado específico.</p>
+    </div>
+  </div>
+
+  <div class="alert info">
+    <div class="alert-icon">ℹ️</div>
+    <div class="alert-body">
+      <strong>Los tonos de cerámicos, porcelanatos y pisos flotantes varían entre partidas</strong>
+      <p>Las partidas descontinuadas dificultan o imposibilitan encontrar el mismo color. Guarde piezas de repuesto si quedan del trabajo original.</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="cards cards-2">
+    <div class="card">
+      <div class="card-icon">🪵</div>
+      <h3>Piso flotante — qué hacer</h3>
+      <p>• Limpiar con paño suave <strong>seco</strong>.<br>• Si hay manchas, use producto recomendado por el fabricante.<br>• Limpie derrames de líquido de inmediato.<br>• Evite alfombras los primeros 90 días.<br>• Cierre cortinas: el sol descolora la madera.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🚫</div>
+      <h3>Piso flotante — qué evitar</h3>
+      <p>• NO encerar, envirutillar, usar jabón ni detergente.<br>• NO derramar agua directamente.<br>• NO arrastrar muebles (levántelos).<br>• NO zapatos de taco alto.<br>• NO maceteros en contacto directo.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏺</div>
+      <h3>Cerámicos y porcelanato</h3>
+      <p>• Barrer o limpiar con paño húmedo y limpiador especial.<br>• Reparar el fragüe desprendido: la cerámica es impermeable pero el fragüe no.<br>• Evite limpiadores abrasivos.<br>• Use limpiapiés en puertas exteriores.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💧</div>
+      <h3>Zonas húmedas (baño/cocina)</h3>
+      <p>• Mantenga ventana abierta o extractor al ducharse y cocinar.<br>• Si aparece moho: use producto especializado según instrucciones.<br>• Si hay manchas de óxido: use desoxidante e investigue la causa.</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════ MUEBLES ════════════════ -->
+<div class="section" id="section-muebles">
+<div class="container">
+  <div class="section-header">
+    <div class="section-icon" style="background:#F0EBE0">🪑</div>
+    <div class="section-title">
+      <h2>Muebles de Cocina, Closets y Vanitorios</h2>
+      <p>El mayor enemigo de muebles y closets es la humedad. Mantenga sellos en buen estado.</p>
+    </div>
+  </div>
+
+  <div class="cards cards-2">
+    <div class="card"><div class="card-icon">🧽</div><h3>Limpieza de melamina</h3><p>Use paño o esponja con producto especial para melamina. <strong>No use productos abrasivos ni virutillas.</strong> Evite exceso de agua al limpiar (hincha la madera aglomerada).</p></div>
+    <div class="card"><div class="card-icon">🪨</div><h3>Cubiertas de granito o mármol</h3><p>Se manchan fácilmente con colorantes, aceite y ácidos (limón, cloro, vinagre). Limpie solo con paño húmedo <strong>sin detergente</strong>. Selle la superficie con producto especializado.</p></div>
+    <div class="card"><div class="card-icon">🚿</div><h3>Espejos</h3><p>Use líquido limpiavidrios. Revise y mantenga el sello que impide penetración de humedad al muro. Un sello dañado puede deteriorar el muro detrás del espejo.</p></div>
+    <div class="card"><div class="card-icon">🗄️</div><h3>Closets — cajoneras y estantes</h3><p>No sobrecargue los cajones ni se cuelgue de ellos. Lubrique los rieles regularmente. Almacene solo elementos livianos en estantes altos.</p></div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="alert warn">
+    <div class="alert-icon">⚠️</div>
+    <div class="alert-body">
+      <strong>Cubiertas de melamina/postformado</strong>
+      <p>Evite apoyar ollas calientes, planchar sobre la cubierta o picar alimentos directamente. No sobrecargue los estantes.</p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════ EXTERIOR ════════════════ -->
+<div class="section" id="section-exterior">
+<div class="container">
+  <div class="section-header">
+    <div class="section-icon" style="background:#EAFAF1">🌿</div>
+    <div class="section-title">
+      <h2>Exterior de la Vivienda</h2>
+      <p>Jardín, canaletas, rejas y cámaras de alcantarillado. Mantenga las pendientes del terreno libres.</p>
+    </div>
+  </div>
+
+  <div class="cards cards-2">
+    <div class="card"><div class="card-icon">🌊</div><h3>Pendientes del terreno</h3><p>Las pendientes están diseñadas para que el agua lluvia y riego evacúe hacia los extremos. Manténgalas despejadas para evitar empozamiento y humedad en los cimientos.</p></div>
+    <div class="card"><div class="card-icon">🌳</div><h3>Árboles y plantas</h3><p>No plante árboles de raíces extensas cerca de la red de alcantarillado. No plante pasto ni plantas pegadas a los muros (guardan humedad).</p></div>
+    <div class="card"><div class="card-icon">🔧</div><h3>Rejas exteriores</h3><p>Mantener libre de óxido y en buen estado. Lubrique portones. La humedad y cambios de temperatura las deterioran y oxidan.</p></div>
+    <div class="card"><div class="card-icon">🕳️</div><h3>Cámaras de alcantarillado</h3><p>Mantenga las tapas siempre despejadas de objetos. Son necesarias para mantenciones regulares y emergencias de tapado.</p></div>
+  </div>
+
+  <div class="divider"></div>
+  <div class="alert warn">
+    <div class="alert-icon">⚡</div>
+    <div class="alert-body">
+      <strong>Extensiones eléctricas en el jardín</strong>
+      <p>Toda extensión subterránea debe protegerse con tubo PVC e instalarse en profundidad. Una extensión desprotegida en el jardín puede causar accidentes graves al cortar el pasto.</p>
+    </div>
+  </div>
+
+  <table class="maint-table" style="margin-top:24px">
+    <thead><tr><th>Mes</th><th>Acción</th><th>¿Qué?</th><th>Frecuencia</th></tr></thead>
+    <tbody>
+      <tr><td><span class="month">Ene/May/Sep</span></td><td>Revisar y reparar</td><td>Filtraciones y goteras de llaves y regadores del jardín</td><td><span class="freq-3">Frecuentemente</span></td></tr>
+      <tr><td><span class="month">Enero</span></td><td>Fumigar</td><td>Exterior de la vivienda (control de plagas)</td><td><span class="freq-1">1 vez al año</span></td></tr>
+      <tr><td><span class="month">Octubre</span></td><td>Pintar</td><td>Muros y rejas exteriores</td><td><span class="freq-3">Cuando sea necesario</span></td></tr>
+      <tr><td></td><td>Lubricar</td><td>Portones</td><td><span class="freq-3">Cuando sea necesario</span></td></tr>
+    </tbody>
+  </table>
+
+</div>
+</div>
+
+<!-- ════════════════ MANTENCIÓN ════════════════ -->
+<div class="section" id="section-mantencion">
+<div class="container">
+  <div class="section-header">
+    <div class="section-icon" style="background:#F0EBE0">📅</div>
+    <div class="section-title">
+      <h2>Calendario Anual de Mantención</h2>
+      <p>Resumen completo de todas las acciones del año. Imprímalo o guárdelo.</p>
+    </div>
+  </div>
+
+  <table class="maint-table">
+    <thead>
+      <tr><th>Área</th><th>Mes</th><th>Acción</th><th>¿Qué y dónde?</th><th>Frecuencia</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Humedad</strong></td><td><span class="month">Marzo</span></td><td>Limpiar</td><td>Drenajes, rieles ventanas PVC y canaletas</td><td><span class="freq-1">1 vez/año</span></td></tr>
+      <tr><td><strong>Humedad</strong></td><td><span class="month">Mar/Jun/Sep</span></td><td>Limpiar</td><td>Extractores cocina y baño</td><td><span class="freq-3">3 veces/año</span></td></tr>
+      <tr><td><strong>Humedad</strong></td><td><span class="month">Mar/Sep</span></td><td>Limpiar</td><td>Celosías de ventilación</td><td><span class="freq-2">2 veces/año</span></td></tr>
+      <tr><td><strong>Humedad</strong></td><td><span class="month">Abril</span></td><td>Mantención</td><td>Calefacción</td><td><span class="freq-1">1 vez/año</span></td></tr>
+      <tr><td><strong>Techumbres</strong></td><td><span class="month">Marzo</span></td><td>Revisar</td><td>Inspección visual de la cubierta</td><td><span class="freq-1">1 vez/año</span></td></tr>
+      <tr><td><strong>Techumbres</strong></td><td><span class="month">Mar/Jun</span></td><td>Revisar/Limpiar</td><td>Canales, bajadas de agua lluvia, rejillas</td><td><span class="freq-2">2 veces/año</span></td></tr>
+      <tr><td><strong>Eléctrico</strong></td><td><span class="month">Abril</span></td><td>Verificar</td><td>Estado cables e instalación eléctrica (con especialista)</td><td><span class="freq-1">1 vez/año</span></td></tr>
+      <tr><td><strong>Sanitario</strong></td><td><span class="month">Mar/Sep</span></td><td>Revisar</td><td>Flexibles (reemplazar si se oxidan)</td><td><span class="freq-2">2 veces/año</span></td></tr>
+      <tr><td><strong>Sanitario</strong></td><td><span class="month">Mar/Oct</span></td><td>Limpiar</td><td>Sifones de lavaplatos, tina y lavamanos</td><td><span class="freq-2">2 veces/año</span></td></tr>
+      <tr><td><strong>Sanitario</strong></td><td><span class="month">Abr/Sep</span></td><td>Limpiar</td><td>Filtros y aireaderos de artefactos sanitarios</td><td><span class="freq-2">2 veces/año</span></td></tr>
+      <tr><td><strong>Sanitario</strong></td><td><span class="month">Marzo</span></td><td>Revisar</td><td>Grifería (gomas, llaves de paso)</td><td><span class="freq-1">1 vez/año</span></td></tr>
+      <tr><td><strong>Gas</strong></td><td><span class="month">May/Oct</span></td><td>Limpiar</td><td>Inyectores cocina, calefón y estufas</td><td><span class="freq-3">Frecuente</span></td></tr>
+      <tr><td><strong>Gas</strong></td><td><span class="month">Todo año</span></td><td>Revisar</td><td>Mangueras y cañerías de gas</td><td><span class="freq-3">Siempre</span></td></tr>
+      <tr><td><strong>Pinturas</strong></td><td><span class="month">Mar/Oct</span></td><td>Revisar</td><td>Muros exteriores, sellos, fragües cerámicos</td><td><span class="freq-2">2 veces/año</span></td></tr>
+      <tr><td><strong>Pinturas</strong></td><td><span class="month">Octubre</span></td><td>Pintar</td><td>Muros exteriores, puertas y rejas</td><td><span class="freq-1">1 vez/año</span></td></tr>
+      <tr><td><strong>Pinturas</strong></td><td><span class="month">Cada 2 años</span></td><td>Pintar</td><td>Muros y cielos interiores, baños</td><td><span class="freq-1">Cada 2 años</span></td></tr>
+      <tr><td><strong>Puertas/Vent.</strong></td><td><span class="month">Mar/Sep</span></td><td>Limpiar y revisar</td><td>Drenajes y sellos ventanas PVC</td><td><span class="freq-2">2 veces/año</span></td></tr>
+      <tr><td><strong>Puertas/Vent.</strong></td><td><span class="month">Abr/Sep</span></td><td>Lubricar</td><td>Bisagras, portones y quincallería</td><td><span class="freq-2">2 veces/año</span></td></tr>
+      <tr><td><strong>Pisos</strong></td><td><span class="month">Mar/Oct</span></td><td>Revisar</td><td>Sellos y fragüe cerámicos de piso y muro</td><td><span class="freq-2">2 veces/año</span></td></tr>
+      <tr><td><strong>Revestim. Ext.</strong></td><td><span class="month">Ene/Ago</span></td><td>Revisar</td><td>Fijaciones palmetas vinyl siding</td><td><span class="freq-2">2 veces/año</span></td></tr>
+      <tr><td><strong>Revestim. Ext.</strong></td><td><span class="month">Octubre</span></td><td>Pintar</td><td>Revestimiento fibrocemento y Smart Panel</td><td><span class="freq-1">Cada 2 años</span></td></tr>
+      <tr><td><strong>Muebles</strong></td><td><span class="month">Marzo</span></td><td>Revisar</td><td>Sellos de lavaplatos, lavarropa, baño, cocina</td><td><span class="freq-3">Periódico</span></td></tr>
+      <tr><td><strong>Muebles</strong></td><td><span class="month">Mar/Sep</span></td><td>Lubricar</td><td>Rieles de cajoneras</td><td><span class="freq-2">Cada 6 meses</span></td></tr>
+      <tr><td><strong>Muebles</strong></td><td><span class="month">Abr/Sep</span></td><td>Revisar</td><td>Tornillos bisagras y puertas de closets</td><td><span class="freq-2">Cada 6 meses</span></td></tr>
+      <tr><td><strong>Exterior</strong></td><td><span class="month">Ene/May/Sep</span></td><td>Revisar</td><td>Filtraciones de llaves y regadores</td><td><span class="freq-3">Frecuente</span></td></tr>
+      <tr><td><strong>Exterior</strong></td><td><span class="month">Enero</span></td><td>Fumigar</td><td>Exterior de la vivienda</td><td><span class="freq-1">1 vez/año</span></td></tr>
+    </tbody>
+  </table>
+
+</div>
+</div>
+
+<!-- ════════════════ CONTACTOS ════════════════ -->
+<div class="section" id="section-contactos">
+<div class="container">
+  <div class="section-header">
+    <div class="section-icon" style="background:#EBF5FB">📞</div>
+    <div class="section-title">
+      <h2>Contactos y Servicios</h2>
+      <p>Números importantes que debe tener siempre a mano.</p>
+    </div>
+  </div>
+
+  <span class="label-sm">Emergencias nacionales</span>
+  <div class="cards cards-3" style="margin-bottom:32px">
+    <div class="card" style="text-align:center">
+      <div style="font-size:36px;font-weight:700;color:var(--danger)">132</div>
+      <div style="font-size:13px;font-weight:600">Bomberos</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:36px;font-weight:700;color:var(--brand)">133</div>
+      <div style="font-size:13px;font-weight:600">Carabineros</div>
+    </div>
+    <div class="card" style="text-align:center">
+      <div style="font-size:36px;font-weight:700;color:var(--info)">131</div>
+      <div style="font-size:13px;font-weight:600">SAMU</div>
+    </div>
+  </div>
+
+  <span class="label-sm">Servicio técnico caldera (proveedor oficial)</span>
+  <div class="contact-card" style="margin-bottom:24px">
+    <div class="icon">🔧</div>
+    <div>
+      <h3>IMPA Ltda. — Ingeniería Mecánica Proyectos y Asesorías</h3>
+      <p>Ignacio Carrera Pinto 1169, Punta Arenas · RUT 86.676.200-7 · secretaria@impa.cl</p>
+      <a href="tel:+56612213551">61-221 3551</a>
+    </div>
+  </div>
+
+  <span class="label-sm">Inmobiliaria Salfa Austral — Post Venta</span>
+  <div class="contact-card" style="background: var(--brand-mid); margin-bottom:24px">
+    <div class="icon">🏢</div>
+    <div>
+      <h3>Inmobiliaria Salfa Austral Ltda.</h3>
+      <p>RUT 96.610.790-1 · Av. Presidente Riesco 5335, Piso 11, Santiago · Para fallas cubiertas por garantía Ley 20.016</p>
+      <a href="mailto:postventa@salfaustral.cl" style="font-size:14px; padding:8px 16px">postventa@salfaustral.cl</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <span class="label-sm">Herramientas básicas recomendadas</span>
+  <div class="tools-grid">
+    <div class="tool-item"><span class="emoji">🔨</span>Martillo</div>
+    <div class="tool-item"><span class="emoji">🪛</span>Destornillador</div>
+    <div class="tool-item"><span class="emoji">🔧</span>Llave francesa</div>
+    <div class="tool-item"><span class="emoji">🔩</span>Taladro</div>
+    <div class="tool-item"><span class="emoji">📏</span>Huincha de medir</div>
+    <div class="tool-item"><span class="emoji">🩹</span>Cinta teflón</div>
+    <div class="tool-item"><span class="emoji">🔬</span>Nivelador</div>
+    <div class="tool-item"><span class="emoji">🧴</span>Silicona (pistola)</div>
+    <div class="tool-item"><span class="emoji">🧤</span>Guantes</div>
+    <div class="tool-item"><span class="emoji">🥽</span>Antiparras</div>
+    <div class="tool-item"><span class="emoji">💧</span>Lubricante</div>
+    <div class="tool-item"><span class="emoji">⚡</span>Probador eléctrico</div>
+  </div>
+
+</div>
+</div>
+
+<footer>
+  <strong>Manual del Propietario — Mirador del Bosque II</strong><br>
+  Inmobiliaria Salfa Austral Ltda. · Información basada en el Manual de Uso y Mantención de la Vivienda<br>
+  <span style="font-size:11px; opacity:.5; margin-top:8px; display:block">Para emergencias llame siempre al 132 (Bomberos) o 133 (Carabineros)</span>
+</footer>
+
+<script>
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  const sec = document.getElementById('section-' + id);
+  if (sec) sec.classList.add('active');
+  const tab = document.querySelector('[data-section="' + id + '"]');
+  if (tab) {
+    tab.classList.add('active');
+    tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Scroll tabs active tab into view on load
+document.querySelector('.nav-tab.active')?.scrollIntoView({ block: 'nearest', inline: 'center' });
+</script>
+<script>
+// ── CONFIGURACIÓN DE CONTRASEÑA ──────────────────────────
+// Cambie este valor por la clave que desee entregar a sus propietarios
+const CLAVE_ACCESO = 'MDB2-2026';
+// ─────────────────────────────────────────────────────────
+
+const SESSION_KEY = 'mdb2_auth';
+
+function checkPwd() {
+  const input = document.getElementById('pwd-input');
+  const errorEl = document.getElementById('lock-error');
+  const val = input.value.trim().toUpperCase();
+  if (val === CLAVE_ACCESO.toUpperCase()) {
+    sessionStorage.setItem(SESSION_KEY, '1');
+    document.getElementById('lock-screen').classList.add('hidden');
+    errorEl.textContent = '';
+  } else {
+    input.classList.remove('error');
+    void input.offsetWidth; // reflow para reiniciar animación
+    input.classList.add('error');
+    errorEl.textContent = 'Clave incorrecta. Intente nuevamente.';
+    input.value = '';
+    input.focus();
+  }
+}
+
+function toggleShow() {
+  const input = document.getElementById('pwd-input');
+  const btn = document.getElementById('eye-btn');
+  if (input.type === 'password') {
+    input.type = 'text';
+    btn.textContent = '🙈';
+  } else {
+    input.type = 'password';
+    btn.textContent = '👁';
+  }
+}
+
+// Si ya autenticó en esta sesión, no muestra la pantalla
+if (sessionStorage.getItem(SESSION_KEY) === '1') {
+  document.getElementById('lock-screen').classList.add('hidden');
+}
+
+// Auto-foco en el campo al cargar
+window.addEventListener('DOMContentLoaded', () => {
+  const ls = document.getElementById('lock-screen');
+  if (!ls.classList.contains('hidden')) {
+    document.getElementById('pwd-input').focus();
+  }
+});
+</script>
+
+</body>
+</html>
